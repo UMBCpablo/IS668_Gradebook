@@ -413,18 +413,19 @@ def studentgrade():
                 letter_grade = 'NA'
             elif points_available > 0:
                 grade_percentage = ((points_awarded/points_available)*100)
-                if grade_percentage > 89:
-                    letter_grade = 'A'
-                elif grade_percentage > 79:
-                    letter_grade = 'B'
-                elif grade_percentage > 69:
-                    letter_grade = 'C'
-                elif grade_percentage >59:
-                    letter_grade = 'D'
-                elif grade_percentage > 49:
-                    letter_grade ='E'
-                elif grade_percentage < 50:
+                if grade_percentage < 50:
                     letter_grade = 'F'
+                elif grade_percentage < 60:
+                    letter_grade = 'E'
+                elif grade_percentage < 70:
+                    letter_grade = 'D'
+                elif grade_percentage < 80:
+                    letter_grade = 'C'
+                elif grade_percentage <90:
+                    letter_grade = 'B'
+                elif grade_percentage < 101:
+                    letter_grade = 'A'
+
             return render_template("student_gradebook.html", student_assigned_id=student_assigned_id, student_info=Student.query.filter_by(StudentId=id).first(), letter_grade=letter_grade, gradebookcount=gradebookcount, student_assignments=student_assignments, first_name=first_name, last_name=last_name, student=student, studentcount=studentcount, assignmentcount = assignmentcount, assignments=Assignment.query.order_by(Assignment.AssignmentName).all())
         return render_template("student_gradebook.html", student_assigned_id=student_assigned_id, student_info=Student.query.filter_by(StudentId=id).first(), gradebookcount=gradebookcount, student_assignments=student_assignments, first_name=first_name, last_name=last_name, student=student, studentcount=studentcount, assignmentcount = assignmentcount, assignments=Assignment.query.order_by(Assignment.AssignmentName).all())
 
