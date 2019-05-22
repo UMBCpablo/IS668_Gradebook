@@ -662,22 +662,22 @@ def remove():
 
     id = request.form.get("studentid_remove") #getid
     preindex_count = Gradebook.query.filter_by(StudentId=id).count() #numberintable
-    if preindex_count > 1:
+    if preindex_count == 0: #if student is not in gradebook then only delete student
+        student = Student.query.filter_by(StudentId=id).first()
+        db.session.delete(student)
+        db.session.commit()
+        return redirect(url_for('student'))
+    elif preindex_count > 1: #if student is in gradebook, then delete their assignments from gradebook
         studentassignment_exist = preindex_count-1 #substract 1 to accomodate index
         for i in range(0, studentassignment_exist):
             assingment_list = Gradebook.query.filter_by(StudentId=id).first()
             db.session.delete(assingment_list)
             db.session.commit()
         db.session.commit()
-
-    assingment_list = Gradebook.query.filter_by(StudentId=id).first()
-    db.session.delete(assingment_list)
-    db.session.commit()
-
-    student = Student.query.filter_by(StudentId=id).first()
-    db.session.delete(student)
-    db.session.commit()
-    return redirect(url_for('student'))
+        student = Student.query.filter_by(StudentId=id).first()
+        db.session.delete(student)
+        db.session.commit()
+        return redirect(url_for('student'))
 
 #################################################
 
